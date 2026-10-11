@@ -15,9 +15,9 @@
   in {
     homeConfigurations."hxt" = home-manager.lib.homeManagerConfiguration {
       inherit pkgs;
-      modules = [ 
-        ./home.nix 
-        ./packages.nix
+      modules = [
+        ./home.nix
+        ./pkgs.nix
       ];
     };
   };

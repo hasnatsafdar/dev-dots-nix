@@ -1,0 +1,36 @@
+# ╭──────────────────────────────────────────╮
+# │        Minimal Zsh plugin manager        │
+# ╰──────────────────────────────────────────╯
+
+# Fallback to $HOME/.zsh/plugins if $ZDOTDIR is unset to prevent root writing
+ZPLUGINDIR="${ZDOTDIR:-$HOME}/.zsh/plugins"
+mkdir -p "$ZPLUGINDIR"
+
+add_plugin() {
+  local repo="$1"
+  local plugin_name="${repo##*/}"
+  local plugin_dir="$ZPLUGINDIR/$plugin_name"
+
+  # Clone if not present
+  if [[ ! -d "$plugin_dir" ]]; then
+    echo "Installing $plugin_name..."
+    git clone --depth=1 "https://github.com/$repo.git" "$plugin_dir"
+  fi
+
+  # Try to source common plugin entry files
+  # The (N) qualifier is crucial: it enables nullglob for that pattern,
+  # preventing script termination if no files match the wildcard.
+  for file in \
+    "$plugin_dir/$plugin_name.plugin.zsh" \
+    "$plugin_dir/$plugin_name.zsh" \
+    "$plugin_dir"/*.plugin.zsh(N) \
+    "$plugin_dir"/*.zsh(N)
+  do
+    if [[ -f "$file" ]]; then
+      source "$file"
+      return 0
+    fi
+  done
+
+  echo "Warning: No initialization file found for $plugin_name" >&2
+}

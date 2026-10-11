@@ -10,18 +10,16 @@ let
     aria2     = "aria2";
     btop      = "btop";
     cava      = "cava";
-    dunst     = "dunst";
+    # dunst     = "dunst";
     fastfetch = "fastfetch";
-    kitty     = "kitty";
-    nushell   = "nushell";
+    # kitty     = "kitty";
+    # nushell   = "nushell";
     nvim      = "nvim";
     ohmyposh  = "ohmyposh";
-    picom     = "picom";
-    qtile     = "qtile";
-    rofi      = "rofi";
+    # picom     = "picom";
+    # qtile     = "qtile";
+    # rofi      = "rofi";
     tmux      = "tmux";
-    xmobar    = "xmobar";
-    xmonad    = "xmonad";
     yazi      = "yazi";
     zathura   = "zathura";
     zsh       = "zsh";
@@ -52,7 +50,7 @@ in
     VISUAL = "nvim";
   };
 
-  programs.git = {
+  programs.git.settings = {
     enable    = true;
     userName  = "hasnatsafdar";
     userEmail = "hasnat.professional@gmail.com";
