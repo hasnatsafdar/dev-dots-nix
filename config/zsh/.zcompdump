@@ -1,4 +1,4 @@
-#files: 1068	version: 5.9.2
+#files: 1083	version: 5.9.2
 
 _comps=(
 '-' '_precommand'
@@ -440,6 +440,8 @@ _comps=(
 'fold' '_fold'
 'folder' '_mh'
 'folders' '_mh'
+'foot' '_foot'
+'footclient' '_footclient'
 'fortune' '_fortune'
 'forw' '_mh'
 'fprev' '_mh'
@@ -452,6 +454,7 @@ _comps=(
 'fuser' '_fuser'
 'fusermount' '_fusermount'
 'fusermount3' '_fusermount'
+'fuzzel' '_fuzzel'
 'fwhois' '_whois'
 'fwupdmgr' '_fwupdmgr'
 'g++' '_gcc'
@@ -1048,6 +1051,7 @@ _comps=(
 'nginx' '_nginx'
 'ngrep' '_ngrep'
 'nice' '_nice'
+'ninja' '_ninja'
 'nkf' '_nkf'
 'nl' '_nl'
 'nm' '_nm'
@@ -1363,6 +1367,7 @@ _comps=(
 'sadf' '_sysstat'
 'sahara' '_openstack'
 'sar' '_sysstat'
+'satty' '_satty'
 'sbt' '_sbt'
 'scala' '_scala'
 'scalac' '_scala'
@@ -1485,6 +1490,7 @@ _comps=(
 'ssh-keyscan' '_ssh'
 'sslscan' '_sslscan'
 'star' '_tar'
+'starship' '_starship'
 'start' '_initctl'
 'stat' '_stat'
 'status' '_initctl'
@@ -1604,6 +1610,10 @@ _comps=(
 'transmission-remote' '_transmission'
 'trap' '_trap'
 'trash' '_trash'
+'trash-empty' '_trash-empty'
+'trash-list' '_trash-list'
+'trash-put' '_trash-put'
+'trash-restore' '_trash-restore'
 'tree' '_tree'
 'trial' '_twisted'
 'trove' '_openstack'
@@ -1807,6 +1817,8 @@ _comps=(
 'wifi-menu' '_netctl'
 'wiggle' '_wiggle'
 'wipefs' '_wipefs'
+'wl-copy' '_wl-copy'
+'wl-paste' '_wl-paste'
 'wodim' '_cdrecord'
 'wpa_cli' '_wpa_cli'
 'wpctl' '_wpctl'
@@ -1873,6 +1885,7 @@ _comps=(
 'yamllint' '_yamllint'
 'yarn' '_yarn'
 'yash' '_sh'
+'yay' '_yay'
 'yazi' '_yazi'
 'ypbind' '_yp'
 'ypcat' '_yp'
@@ -2081,47 +2094,50 @@ autoload -Uz _afew _age _archlinux-java _arch-update _atach \
             _dolphin _do-release-upgrade _ecdsautil _emacs _emulator \
             _envdir _exportfs _eza _fab _fail2ban-client \
             _fail2ban-regex _fallocate _fastfetch _fd _ffind \
-            _flutter _fwupdmgr _gas _ghc _gio \
-            _gist _git-flow _git-pulls _git-revise _git-wtf \
-            _glances _golang _gpgconf _grpcurl _gtk-launch \
-            _hello _hledger _hostnamectl _httpie _ibus \
-            _img2sixel _include-what-you-use _insmod _inxi _ipcmk \
-            _ipcrm _ipcs _jest _jmeter _jmeter-plugins \
-            _jonas _journalctl _jrnl _kak _kdeconnect \
-            _kde-inhibit _kernel-install _kitchen _konsole _krunner \
-            _kscreen-doctor _l3build _language_codes _ldattach _lilypond \
-            _localectl _loginctl _lscpu _lsipc _lslocks \
-            _lslogins _lsmem _lsmod _lunchy _machinectl \
-            _mc _mcookie _middleman _mina _mix \
-            _mkcert _mkinitcpio _mpv _mssh _mussh \
-            _mvn _nano _nanoc _neo _neofetch \
-            _netctl _networkctl _networkQuality _nftables _node \
-            _nvm _oomctl _openssl _openvpn3 _optirun \
-            _p11-kit _paccache _pacdiff _paclist _paclog-pkglist \
-            _pacman _pacscripts _pacsearch _pacsort _pactree \
-            _parallel _paru _patool _periscope _phing \
+            _flutter _foot _footclient _fuzzel _fwupdmgr \
+            _gas _ghc _gio _gist _git-flow \
+            _git-pulls _git-revise _git-wtf _glances _golang \
+            _gpgconf _grpcurl _gtk-launch _hello _hledger \
+            _hostnamectl _httpie _ibus _img2sixel _include-what-you-use \
+            _insmod _inxi _ipcmk _ipcrm _ipcs \
+            _jest _jmeter _jmeter-plugins _jonas _journalctl \
+            _jrnl _kak _kdeconnect _kde-inhibit _kernel-install \
+            _kitchen _konsole _krunner _kscreen-doctor _l3build \
+            _language_codes _ldattach _lilypond _localectl _loginctl \
+            _lscpu _lsipc _lslocks _lslogins _lsmem \
+            _lsmod _lunchy _machinectl _mc _mcookie \
+            _middleman _mina _mix _mkcert _mkinitcpio \
+            _mpv _mssh _mussh _mvn _nano \
+            _nanoc _neo _neofetch _netctl _networkctl \
+            _networkQuality _nftables _ninja _node _nvm \
+            _oomctl _openssl _openvpn3 _optirun _p11-kit \
+            _paccache _pacdiff _paclist _paclog-pkglist _pacman \
+            _pacscripts _pacsearch _pacsort _pactree _parallel \
+            _paru _patool _periscope _phing _pip \
             _pixz _pkcon _pkgfile _plasmashell _pm2 \
             _port _powerprofilesctl _pre-commit _protoc _pulseaudio \
             _pygmentize _qmk _rails _ralio _rankmirrors \
             _rdfind _redis-cli _resolvectl _rev _rfkill \
             _rg _rmlint _rmmod _rslsync _rspec \
-            _rubocop _run0 _rustup _sbt _scala \
-            _screencapture _scrub _sd _sd_bus_address _sdd \
-            _sd_hosts_or_user_at_host _sdkmanager _sd_machines _sd_outputmodes _sd_unit_files \
-            _sensors _sensors-detect _setcap _setup.py _shallow-backup \
-            _shellcheck _shelly _showoff _shtab _snapper \
-            _sox_ng _srm _sslscan _storagectl _subliminal \
-            _supervisord _svm _swaplabel _swapoff _swapon \
-            _systemctl _systemd _systemd-analyze _systemd-cryptenroll _systemd-delta \
-            _systemd-hwdb _systemd-id128 _systemd-inhibit _systemd-nspawn _systemd-path \
-            _systemd-run _systemd-sysinstall _systemd-sysupdate _systemd-tmpfiles _systemsettings \
-            _teamocil _textutil _thor _timedatectl _tldr \
-            _tmuxinator _tox _trust _tsc _ts-node \
-            _tsx _udevadm _udisks2 _udisksctl _ufw \
-            _updatectl _updpkgsums _upower _userdbctl _uuidd \
-            _uuidgen _uuidparse _varlinkctl _vipw _virtualbox \
-            _vnstat _wdctl _wemux _wg-quick _wpctl \
-            _xdg-mime _xsel _ya _yamllint _yarn \
+            _rubocop _run0 _rustup _satty _sbt \
+            _scala _screencapture _scrub _sd _sd_bus_address \
+            _sdd _sd_hosts_or_user_at_host _sdkmanager _sd_machines _sd_outputmodes \
+            _sd_unit_files _sensors _sensors-detect _setcap _setup.py \
+            _shallow-backup _shellcheck _shelly _showoff _shtab \
+            _snapper _sox_ng _srm _sslscan _starship \
+            _storagectl _subliminal _supervisord _svm _swaplabel \
+            _swapoff _swapon _systemctl _systemd _systemd-analyze \
+            _systemd-cryptenroll _systemd-delta _systemd-hwdb _systemd-id128 _systemd-inhibit \
+            _systemd-nspawn _systemd-path _systemd-run _systemd-sysinstall _systemd-sysupdate \
+            _systemd-tmpfiles _systemsettings _teamocil _textutil _thor \
+            _timedatectl _tldr _tmuxinator _tox _trash \
+            _trash-empty _trash-list _trash-put _trash-restore _trust \
+            _tsc _ts-node _tsx _udevadm _udisks2 \
+            _udisksctl _ufw _updatectl _updpkgsums _upower \
+            _userdbctl _uuidd _uuidgen _uuidparse _varlinkctl \
+            _vipw _virtualbox _vnstat _wdctl _wemux \
+            _wg-quick _wl-copy _wl-paste _wpctl _xdg-mime \
+            _xsel _ya _yamllint _yarn _yay \
             _yazi _zcash-cli _zeditor _zoxide _zramctl \
             _cdr _all_labels _all_matches _alternative _approximate \
             _arg_compile _arguments _as_if _bash_completions _cache_invalid \

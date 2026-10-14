@@ -53,14 +53,15 @@
   # ] ++ lib.optionals pkgs.stdenv.isLinux [
     # --- Tiling WM & Linux GUI Utils ---
     # qtile python3Packages.qtile-extras
-    # polybar rofi
+    # polybar 
+    rofi
     # dunst libnotify
     # lxappearance picom
     # xwallpaper nitrogen
 
     # --- Linux-specific apps & System Utils ---
     # pywal16
-    # kitty
+    kitty
     # thunar
     zathura
     # kdePackages.kdenlive obs-studio # flameshot maim
