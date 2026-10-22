@@ -87,3 +87,4 @@ add_plugin Aloxaf/fzf-tab
 
 # Misc stuff
 # nitch
+fastfetch --config examples/13

@@ -1,0 +1,123 @@
+set -g default-terminal "tmux-256color"
+set -ga terminal-overrides ",*:RGB"
+
+set -g mouse on
+set -g set-clipboard on
+
+set -g status-position top
+
+unbind C-b
+set -g prefix C-space
+bind-key C-space send-prefix
+
+unbind %
+bind i split-window -h -c "#{pane_current_path}"
+unbind '"'
+bind u split-window -v -c "#{pane_current_path}"
+
+unbind r
+bind r source-file $HOME/.config/tmux/tmux.conf
+
+bind -n M-h select-pane -L
+bind -n M-j select-pane -D
+bind -n M-k select-pane -U
+bind -n M-l select-pane -R
+
+bind -n M-K swap-pane -U
+bind -n M-J swap-pane -D
+
+bind -n C-M-h resize-pane -L 5
+bind -n C-M-j resize-pane -D 5
+bind -n C-M-k resize-pane -U 5
+
+bind -n M-1 select-window -t 1
+bind -n M-2 select-window -t 2
+bind -n M-3 select-window -t 3
+bind -n M-4 select-window -t 4
+bind -n M-5 select-window -t 5
+bind -n M-6 select-window -t 6
+bind -n M-7 select-window -t 7
+bind -n M-8 select-window -t 8
+bind -n M-9 select-window -t 9
+
+# move pane to window N
+bind -n M-! move-pane -t :1
+bind -n M-@ move-pane -t :2
+bind -n M-# move-pane -t :3
+bind -n M-$ move-pane -t :4
+bind -n M-% move-pane -t :5
+bind -n M-^ move-pane -t :6
+bind -n M-& move-pane -t :7
+bind -n M-* move-pane -t :8
+bind -n M-( move-pane -t :9
+bind -n M-) move-pane -t :0
+
+set -g base-index 1
+set -g pane-base-index 1
+set-window-option -g pane-base-index 1
+set-option -g renumber-windows on
+
+set-window-option -g mode-keys vi
+bind-key -T copy-mode-vi v send-keys -X begin-selection
+bind-key -T copy-mode-vi C-v send-keys -X rectangle-toggle
+bind-key -T copy-mode-vi y send-keys -X copy-selection-and-cancel
+unbind -T copy-mode-vi MouseDragEnd1Pane
+
+# Custom Scripts and Popups
+bind-key -r m display-popup -E "~/.local/bin/tmux/tmux-cht"
+
+# Lazygit
+bind-key -r g display-popup \
+  -d "#{pane_current_path}" \
+  -w 90% \
+  -h 90% \
+  -E "lazygit"
+
+# Scratchpads
+bind-key s display-popup -E -w 80% -h 70% "$SHELL"
+
+
+##### STATUSLINE (transparent bar + rounded pills, Tokyonight Moon)
+
+# Palette
+thm_bg="#222436"
+thm_fg="#c8d3f5"
+thm_dim="#828bb8"
+thm_cyan="#86e1fc"
+thm_gray="#3a3f5a"
+thm_magenta="#c099ff"
+thm_yellow="#ffc777"
+thm_blue="#82aaff"
+thm_black4="#444a73"
+
+# Bar: fully transparent, nothing on the left
+set -g status on
+set -g status-style "bg=default,fg=${thm_fg}"
+set -g status-justify left
+set -g status-left-length 100
+set -g status-right-length 100
+set -g status-left ""
+
+# Messages / prompt
+set -g message-style "fg=${thm_cyan},bg=${thm_gray},align=centre"
+set -g message-command-style "fg=${thm_cyan},bg=${thm_gray},align=centre"
+
+# Pane borders
+set -g pane-border-style "fg=${thm_gray}"
+set -g pane-active-border-style "fg=${thm_blue}"
+
+# Windows: inactive = plain text, active = rounded pill
+set -g window-status-separator " "
+set -g window-status-style "fg=${thm_dim},bg=default"
+set -g window-status-activity-style "fg=${thm_yellow},bg=default"
+
+set -g window-status-format "#[fg=${thm_blue},bg=default]#I #[fg=${thm_dim}]#W"
+
+set -g window-status-current-format "#[fg=${thm_gray},bg=default]#[fg=${thm_blue},bg=${thm_gray},bold]#I #[fg=${thm_cyan},nobold]#(echo '#{pane_current_path}' | rev | cut -d'/' -f-2 | rev)#[fg=${thm_gray},bg=default]"
+
+# Right: session pill. Icon segment turns magenta while the prefix is active
+set -g status-right "#{?client_prefix,#[fg=${thm_magenta}],#[fg=${thm_blue}]}#[bg=default]#{?client_prefix,#[bg=${thm_magenta}],#[bg=${thm_blue}]}#[fg=${thm_bg}] #[fg=${thm_fg},bg=${thm_gray}] #S #[fg=${thm_gray},bg=default]"
+
+# Copy mode / clock
+set -g clock-mode-colour "${thm_blue}"
+set -g mode-style "fg=${thm_blue} bg=${thm_black4} bold"

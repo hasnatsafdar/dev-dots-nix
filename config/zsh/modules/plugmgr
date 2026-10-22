@@ -1,36 +1,67 @@
-# ╭──────────────────────────────────────────╮
-# │        Minimal Zsh plugin manager        │
-# ╰──────────────────────────────────────────╯
+# Minimal Zsh plugin manager.
+# Source this file from ~/.config/zsh/.zshrc, then call add_plugin owner/repo.
 
-# Fallback to $HOME/.zsh/plugins if $ZDOTDIR is unset to prevent root writing
-ZPLUGINDIR="${ZDOTDIR:-$HOME}/.zsh/plugins"
-mkdir -p "$ZPLUGINDIR"
+: "${ZPLUGINDIR:=${ZDOTDIR:-$HOME/.config/zsh}/plugins}"
+if ! command mkdir -p -- "$ZPLUGINDIR"; then
+  print -u2 -- "plugmgr: cannot create plugin directory: $ZPLUGINDIR"
+  return 1
+fi
 
 add_plugin() {
-  local repo="$1"
-  local plugin_name="${repo##*/}"
-  local plugin_dir="$ZPLUGINDIR/$plugin_name"
+  emulate -L zsh
+  setopt local_options null_glob
 
-  # Clone if not present
-  if [[ ! -d "$plugin_dir" ]]; then
-    echo "Installing $plugin_name..."
-    git clone --depth=1 "https://github.com/$repo.git" "$plugin_dir"
+  if [[ -z "$1" ]]; then
+    print -u2 -- 'Usage: add_plugin owner/repository'
+    return 2
   fi
 
-  # Try to source common plugin entry files
-  # The (N) qualifier is crucial: it enables nullglob for that pattern,
-  # preventing script termination if no files match the wildcard.
-  for file in \
-    "$plugin_dir/$plugin_name.plugin.zsh" \
-    "$plugin_dir/$plugin_name.zsh" \
-    "$plugin_dir"/*.plugin.zsh(N) \
-    "$plugin_dir"/*.zsh(N)
-  do
+  local repo="${1#https://github.com/}"
+  repo="${repo%.git}"
+  local name="${repo:t}"
+  local dir="$ZPLUGINDIR/$name"
+  local file
+  local -a candidates
+
+  if [[ "$repo" != */* || "$repo" == *[[:space:]]* ]]; then
+    print -u2 -- "plugmgr: expected owner/repository, got: $1"
+    return 2
+  fi
+
+  if [[ ! -d "$dir" ]]; then
+    print -- "Installing $repo..."
+    if ! command git clone --depth=1 "https://github.com/$repo.git" "$dir"; then
+      command rm -rf -- "$dir" 2>/dev/null
+      print -u2 -- "plugmgr: failed to clone $repo"
+      return 1
+    fi
+  elif [[ ! -d "$dir/.git" ]]; then
+    print -u2 -- "plugmgr: $dir exists but is not a Git clone; using it as-is"
+  fi
+
+  # zsh-completions provides completion functions, not a plugin entry point.
+  if [[ "$repo" == "zsh-users/zsh-completions" ]]; then
+    fpath=("$dir/src" $fpath)
+    return 0
+  fi
+
+  candidates=(
+    "$dir/$name.plugin.zsh"
+    "$dir/$name.zsh"
+    "$dir"/*.plugin.zsh(N)
+    "$dir"/*.zsh(N)
+  )
+
+  for file in "${candidates[@]}"; do
     if [[ -f "$file" ]]; then
-      source "$file"
+      source "$file" || {
+        print -u2 -- "plugmgr: failed to source $file"
+        return 1
+      }
       return 0
     fi
   done
 
-  echo "Warning: No initialization file found for $plugin_name" >&2
+  print -u2 -- "plugmgr: no top-level .plugin.zsh or .zsh entry point found for $repo"
+  return 1
 }

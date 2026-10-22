@@ -4,7 +4,7 @@
 )
 
 (defsrc
-  caps a s d f j k l ; lalt ralt
+  caps a s d f j k l ; lalt ralt h spc
 )
 (defvar
   tap-time 150
@@ -22,8 +22,15 @@
   ; (multi f24 (tap-hold $tap-time $hold-time ; rmet))
   lalt (tap-hold $tap-time $hold-time bspc lalt)
   ralt (tap-hold $tap-time $hold-time ret ralt)
+  space-nav (tap-hold $tap-time $hold-time spc (layer-while-held nav))
 )
 
 (deflayer base
-  esc @a @s @d @f @j @k @l @; @lalt @ralt
+  esc @a @s @d @f @j @k @l @; @lalt @ralt h @space-nav
+)
+
+;; Hold Space, then use H J K L for arrows.
+;; ; = Delete, Left Alt = Home, Right Alt = End.
+(deflayer nav
+  esc XX XX XX XX down up right del home end left spc
 )
